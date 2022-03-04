@@ -29,12 +29,16 @@ router.get('/message', function(req, res){
     res.send('enviando mensajes GET con router')
 });
 router.post('/message', function(req, res){
-    res.send('enviando mensajes desde el POST 👽')
+    //res.send('enviando mensajes desde el POST 👽')
+    //res.status(201).send(); //devolver un nuevo STATUS
+    res.status(201).send({error: '', body: 'creado correctamente'}); //devolviendo un JSON
 });
 router.delete('/message', function(req, res){
     console.log(req.query); // accediendo a parameteros por medio de query 
     console.log(req.body);  //trabjando con el body
+    //res.send();//respuesta vacia 
     res.send('enviando mensajes' + req.body.text +'desde el POST 👽') //mandnado el query al cliente
+    
 });
 
 
