@@ -1,0 +1,20 @@
+{
+  "name": "chat_backend_nodejs",
+  "version": "1.0.0",
+  "description": "un chat como Telegram hecho por mi",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chat",
+    "server",
+    "nodeJS"
+  ],
+  "author": "Sergio Valbuena",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "express": "^4.17.3"
+  }
+}
