@@ -22,6 +22,10 @@ router.post('/', function(req, res){
 
 //con una nueva ruta /message
 router.get('/message', function(req, res){
+    console.log(req.headers); //recibiendo en el servidor  los HEADERS 
+    res.header({
+        "custom-header": "nuestro valor personalizado en el Header"
+    });
     res.send('enviando mensajes GET con router')
 });
 router.post('/message', function(req, res){
