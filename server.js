@@ -1,43 +1,21 @@
 //1. importar express
-const express = require ('express')
+const express = require('express')
 //2. crear router
-const router = express.Router();
+//const router = express.Router(); //paso al archivo network.js
+//const router = require('./components/message/network');
+const router = require('./network/routes');
 //3. boyParser  npm i body-parser
 const bodyParser = require('body-parser');
 //4.
-const response = require('./network/response');
+//const response = require('./network/response'); // pasa a network.js
 
 var app = express();
 //bodyParser
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}))
 //anadir router a express
-app.use(router);
-
-
-
-//con una nueva ruta /message
-router.get('/message', function(req, res){
-    console.log(req.headers); //recibiendo en el servidor  los HEADERS 
-    res.header({
-        "custom-header": "nuestro valor personalizado en el Header"
-    });
-    //res.send('enviando mensajes GET con router')
-    response.success(req, res, "Lista de mensajes");
-});
-router.post('/message', function(req, res){
-    if(req.query.error == 'ok'){
-        response.error(req, res, 'error simulado correctamente', 400)
-    }else{
-        response.success(req, res, 'Creado correctamente', 201);
-    }
-    
-});
-router.delete('/message', function(req, res){
-    console.log(req.query); // accediendo a parameteros por medio de query 
-    console.log(req.body);  //trabjando con el body
-    res.send('enviando mensajes' + req.body.text +'desde el POST 👽') //mandnado el query al cliente
-    
-});
+//app.use(router);
+router(app);
 
 app.use('/app', express.static('public'));
 
