@@ -4,6 +4,8 @@ const express = require ('express')
 const router = express.Router();
 //3. boyParser  npm i body-parser
 const bodyParser = require('body-parser');
+//4.
+const response = require('./network/response');
 
 var app = express();
 //bodyParser
@@ -26,12 +28,20 @@ router.get('/message', function(req, res){
     res.header({
         "custom-header": "nuestro valor personalizado en el Header"
     });
-    res.send('enviando mensajes GET con router')
+    //res.send('enviando mensajes GET con router')
+    response.success(req, res, "Lista de mensajes");
 });
 router.post('/message', function(req, res){
     //res.send('enviando mensajes desde el POST 👽')
     //res.status(201).send(); //devolver un nuevo STATUS
-    res.status(201).send({error: '', body: 'creado correctamente'}); //devolviendo un JSON
+    //res.status(201).send({error: '', body: 'creado correctamente'}); //devolviendo un JSON
+    
+    if(req.query.error == 'ok'){
+        response.error(req, res, 'error simulado correctamente', 400)
+    }else{
+        response.success(req, res, 'Creado correctamente', 201);
+    }
+    
 });
 router.delete('/message', function(req, res){
     console.log(req.query); // accediendo a parameteros por medio de query 
