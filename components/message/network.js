@@ -1,10 +1,11 @@
 const express = require('express');
 const response = require('../../network/response');
+const controller = require('./controller');
 const router = express.Router();
 
 //con una nueva ruta /message
 router.get('/', function(req, res){
-    console.log(req.headers); //recibiendo en el servidor  los HEADERS 
+    //console.log(req.headers); //recibiendo en el servidor  los HEADERS 
     res.header({
         "custom-header": "nuestro valor personalizado en el Header"
     });
@@ -12,11 +13,19 @@ router.get('/', function(req, res){
     response.success(req, res, "Lista de mensajes");
 });
 router.post('/', function(req, res){
-    if(req.query.error == 'ok'){
-        response.error(req, res, 'error inesperado correctamente', 500, 'es solo una simulacion de los errores')
-    }else{
-        response.success(req, res, 'Creado correctamente', 201);
-    }
+
+    controller.addMessage(req.body.user, req.body.message)
+        .then((fullMessage) => {
+            response.success(req, res, fullMessage, 201 );
+        })
+        .catch(e => {
+            response.error(req, res, 'Infomracion Invalida inesperado correctamente', 400, 'error para ell logado')
+        });
+    // if(req.query.error == 'ok'){
+    //     response.error(req, res, 'error inesperado correctamente', 500, 'es solo una simulacion de los errores')
+    // }else{
+    //     response.success(req, res, 'Creado correctamente', 201);
+    // }
     
 });
 router.delete('/', function(req, res){
