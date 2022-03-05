@@ -5,12 +5,13 @@ const router = express.Router();
 
 //con una nueva ruta /message
 router.get('/', function(req, res){
-    //console.log(req.headers); //recibiendo en el servidor  los HEADERS 
-    res.header({
-        "custom-header": "nuestro valor personalizado en el Header"
-    });
-    //res.send('enviando mensajes GET con router')
-    response.success(req, res, "Lista de mensajes");
+    controller.getMessages()
+        .then((messageList) => {
+            response.success(req, res, messageList, 200);
+        })
+        .catch(e => {
+            response.error(req, res, 'Unexpected Error', 500, e);
+        })
 });
 router.post('/', function(req, res){
 
