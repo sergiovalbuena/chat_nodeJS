@@ -4,8 +4,9 @@ const controller = require('./controller');
 const router = express.Router();
 
 //con una nueva ruta /message
-router.get('/', function(req, res){
-    controller.getMessages()
+router.get('/', function (req, res) {
+    const filterMessages = req.query.user || null;
+    controller.getMessages(filterMessages)
         .then((messageList) => {
             response.success(req, res, messageList, 200);
         })
@@ -15,7 +16,7 @@ router.get('/', function(req, res){
 });
 router.post('/', function(req, res){
 
-    controller.addMessage(req.body.user, req.body.message)
+    controller.addMessage(req.body.chat, req.body.user, req.body.message)
         .then((fullMessage) => {
             response.success(req, res, fullMessage, 201 );
         })
@@ -27,12 +28,29 @@ router.post('/', function(req, res){
     // }else{
     //     response.success(req, res, 'Creado correctamente', 201);
     // }
-    
 });
-router.delete('/', function(req, res){
-    console.log(req.query); // accediendo a parameteros por medio de query 
-    console.log(req.body);  //trabjando con el body
-    res.send('enviando mensajes' + req.body.text +'desde el POST 👽') //mandnado el query al cliente
+
+router.patch('/:id', function (req, res) {
+    console.log(req.params.id);
+    
+    controller.updateMessage(req.params.id, req.body.text)
+        .then((data) => {
+            response.success(req, res, data, 200);
+        })
+        .catch(e => { 
+            response.error(req, res, 'Error interno', 500, e)
+        })
+    res.send('Ok')
+})
+
+router.delete('/:id', function(req, res){
+    controller.deleteMessage(req.params.id)
+        .then(() => {
+        response.success(req, res, `usuario ${req.params.id} eliminado`, 200)
+        })
+        .catch(e => { 
+            response.error(req, res, `Error interno`, 500, e);
+        })
     
 });
 
