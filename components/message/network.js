@@ -1,7 +1,15 @@
 const express = require('express');
+const multer = require('multer');
 const response = require('../../network/response');
 const controller = require('./controller');
 const router = express.Router();
+
+
+//multer
+const upload = multer({
+    dest: 'public/files/',
+})
+
 
 //con una nueva ruta /message
 router.get('/', function (req, res) {
@@ -14,9 +22,10 @@ router.get('/', function (req, res) {
             response.error(req, res, 'Unexpected Error', 500, e);
         })
 });
-router.post('/', function(req, res){
+router.post('/', upload.single('file'), function (req, res) {
+    console.log(req.file);
 
-    controller.addMessage(req.body.chat, req.body.user, req.body.message)
+    controller.addMessage(req.body.chat, req.body.user, req.body.message, req.file)
         .then((fullMessage) => {
             response.success(req, res, fullMessage, 201 );
         })
